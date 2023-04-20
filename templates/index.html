@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='test.css') }}">
+</head>
+<body>
+    <div class="pWrapper" id="div1">
+        <label for="">username:</label>
+        <input type="text" name="" id="username">
+    </div>
+    <div class="pWrapper" id="div2">
+        <label for="">password:</label>
+        <input type="text" name="" id="password">
+        <button onclick="login()">Login</button>
+    </div>
+    <div id="play" style="display: none;">
+        <div class="pWrapper" style="margin-bottom:20px">
+            <p><span>Username: </span> <span id="name" style="color: red;"></span></p>
+            <p><span>Số tiền còn lại:</span> <span id="money">200</span></p>
+            <label for="">Mức cược:</label>
+            <input type="text" id="muc_cuoc" value="10">
+            <select name="" id="select">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+        <p class="pWrapper" id = "disable_data">Thứ tự về đích:</p>
+        <section>
+            <span class="pWrapper">1</span>
+            <div class="progressbarWrapper">
+                <span id="greenBar">
+                </span>
+            </div>
+            <span class="pWrapper">2</span>
+            <div class="progressbarWrapper">
+                <span id="redBar"></span>
+            </div>
+            <span class="pWrapper">3</span>
+            <div class="progressbarWrapper">
+                <span id="yellowBar"></span>
+            </div>
+            <button onclick="move()">START</button>
+            <p class="pWrapper" style="color:red" id="noti"></p>
+        </section>
+    </div>
+</body>
+</html>
+
+
+<script>
+    username
+    password
+    function login() {
+        username = document.getElementById("username");
+        password = document.getElementById("password");
+        if(username.value == "admin" && password.value == "admin"){
+            username = username.value
+            password = password.value
+            start()
+        }
+        if (username.value == "thuannk1" && password.value == "thuannk1") {
+            username = username.value
+            password = password.value
+            start()
+        }
+        if (username.value == "namkt" && password.value == "namkt") {
+            username = username.value
+            password = password.value
+            start()
+        }
+        if (username.value == "thangdv" && password.value == "thangdv") {
+            username = username.value
+            password = password.value
+            start()
+        }
+    }
+    function start(){
+        document.getElementById("name").innerHTML = username;
+        document.getElementById("play").style.display = "block";
+        document.getElementById("div1").style.display = "none";
+        document.getElementById("div2").style.display = "none";
+        money = localStorage.getItem("money"+username)
+        if (money) {
+            document.getElementById("money").innerHTML = money
+        }
+    }
+    function move() {
+        elem = document.getElementById("disable_data");
+        elem.innerHTML = "Thứ tự về đích: "
+        muc_cuoc = document.getElementById("muc_cuoc");
+        console.log(muc_cuoc.value)
+        money = document.getElementById("money");
+        console.log(money.innerHTML)
+        select = document.getElementById("select");
+        console.log(select.value)
+        if(money.innerHTML< muc_cuoc.value){
+            return
+        }
+        document.getElementById("noti").innerHTML = "Bạn đã cược " + parseInt(muc_cuoc.value) + " đồng"
+        money.innerHTML = money.innerHTML - muc_cuoc.value
+        localStorage.setItem("money"+username, money.innerHTML);
+        muc_cuoc.disabled = true
+        select.disabled = true
+
+        let elemGreen = document.getElementById("greenBar");
+        let elemRed = document.getElementById("redBar");
+        let elemYellow = document.getElementById("yellowBar");
+        let progressGreen = 0
+        let progressRed = 0
+        let progressYellow = 0
+        let idGreen = setInterval(frameGreen, 1000);
+        let idRed = setInterval(frameRed, 1000);
+        let idYellow = setInterval(frameYellow, 1000);
+        let min = 2;
+        let max = 10;
+        let arrayTop = []
+        function frameGreen() {
+            if (progressGreen >= 100) {
+                clearInterval(idGreen);
+            } else {
+                let dis = getRandomInt(min,max)
+                progressGreen = (progressGreen + dis) > 100 ? 100 : (progressGreen + dis)
+                elemGreen.style.width = progressGreen + "%";
+                elemGreen.innerHTML = progressGreen + "%";
+                if(progressGreen==100){
+                    arrayTop.push(1)
+                    disableData(arrayTop)
+                    tinhtien(arrayTop)
+                }
+            }
+        }
+        function frameRed() {
+            if (progressRed >= 100) {
+                clearInterval(idRed);
+            } else {
+                let dis = getRandomInt(min, max)
+                progressRed = (progressRed + dis) > 100 ? 100 : (progressRed + dis)
+                elemRed.style.width = progressRed  + "%";
+                elemRed.innerHTML = progressRed + "%";
+                if (progressRed == 100) {
+                    arrayTop.push(2)                    
+                    disableData(arrayTop)
+                    tinhtien(arrayTop)
+                }
+            }
+        }
+        function frameYellow() {
+            if (progressYellow >= 100) {
+                clearInterval(idYellow);
+            } else {
+                let dis = getRandomInt(min, max)
+                progressYellow = (progressYellow + dis) > 100 ? 100 : (progressYellow + dis)
+                elemYellow.style.width = progressYellow + "%";
+                elemYellow.innerHTML = progressYellow + "%";
+                if (progressYellow == 100) {
+                    arrayTop.push(3)
+                    disableData(arrayTop)
+                    tinhtien(arrayTop)
+                }
+            }
+        }
+        function disableData(data){
+            elem = document.getElementById("disable_data");
+            elem.innerHTML = "Thứ tự về đích: " +data.join("; ") 
+        }
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        function tinhtien(data){
+            if(data.length==3){
+                muc_cuoc.disabled = false
+                select.disabled = false
+                // money.innerHTML = parseInt(money.innerHTML) + parseInt(muc_cuoc.value) * 3
+                if(data[0]==select.value){
+                    money.innerHTML = parseInt(money.innerHTML) + parseInt(muc_cuoc.value)*4
+                    document.getElementById("noti").innerHTML= "Bạn đã thắng " + parseInt(muc_cuoc.value) * 4 + " đồng"
+                }
+                else {
+                    document.getElementById("noti").innerHTML = "Bạn đã thua " + parseInt(muc_cuoc.value) + " đồng"
+                }
+                localStorage.setItem("money"+username, money.innerHTML);
+            }
+        }
+        
+    }
+
+</script>
