@@ -5,7 +5,5 @@ WORKDIR /code
 COPY . /code
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt
-RUN pip install gunicorn
-RUN pip install flask
-# EXPOSE 80
-# CMD ["gunicorn --bind 0.0.0.0:80 code.server:app"]
+EXPOSE 8080
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "server:app"]
