@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <div class="pWrapper" id="div1">
+        <label for="">username:</label>
+        <input type="text" name="" id="username">
+    </div>
+    <div class="pWrapper" id="div2">
+        <label for="">password:</label>
+        <input type="text" name="" id="password">
+        <button onclick="login()">Login</button>
+    </div>
+    <div id="play" style="display: none;">
+        <div class="pWrapper" style="margin-bottom:20px">
+            <p><span>Username: </span> <span id="name" style="color: red;"></span></p>
+            <p><span>Số tiền còn lại:</span> <span id="money">200</span></p>
+            <label for="">Mức cược:</label>
+            <input type="text" id="muc_cuoc" value="10">
+            <select name="" id="select">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+        <p class="pWrapper" id = "disable_data">Thứ tự về đích:</p>
+        <section>
+            <span class="pWrapper">1</span>
+            <div class="progressbarWrapper">
+                <span id="greenBar">
+                </span>
+            </div>
+            <span class="pWrapper">2</span>
+            <div class="progressbarWrapper">
+                <span id="redBar"></span>
+            </div>
+            <span class="pWrapper">3</span>
+            <div class="progressbarWrapper">
+                <span id="yellowBar"></span>
+            </div>
+            <button onclick="move()">START</button>
+            <p class="pWrapper" style="color:red" id="noti"></p>
+        </section>
+    </div>
+    <script src="main.js"></script> </body>
+</html>
